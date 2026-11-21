@@ -1,0 +1,66 @@
+.return-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.return-side {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-width: 0;
+}
+
+.return-card {
+    margin-bottom: 10px;
+    padding: 12px 14px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: 14px;
+}
+
+.return-card ul {
+    margin: 6px 0;
+    padding-left: 18px;
+}
+
+.qty-input {
+    width: 84px;
+    text-align: center;
+}
+
+.qty-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.refund-box {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 16px;
+    padding: 14px 16px;
+    background: color-mix(in srgb, var(--secondary) 28%, var(--white));
+    border-radius: var(--radius-md);
+}
+
+.refund-box strong {
+    color: var(--dark);
+    font-size: 22px;
+}
+
+.type-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+@media (min-width: 992px) {
+    .return-grid {
+        grid-template-columns: 340px minmax(0, 1fr);
+        align-items: start;
+    }
+}

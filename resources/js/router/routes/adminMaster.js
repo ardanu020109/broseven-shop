@@ -1,0 +1,83 @@
+export default {
+    path: '/admin-master',
+    component: () => import('@/layouts/DashboardLayout.vue'),
+    meta: { requiresAuth: true, roles: ['admin_master'] },
+    children: [
+        {
+            path: 'dashboard',
+            name: 'admin-master.dashboard',
+            component: () => import('@/pages/admin-master/AdminMasterDashboard.vue'),
+            meta: { breadcrumb: ['Admin Master', 'Dashboard'] },
+        },
+        {
+            path: 'products',
+            name: 'admin-master.products',
+            component: () => import('@/pages/products/ProductListPage.vue'),
+            meta: { breadcrumb: ['Admin Master', 'Master Barang'] },
+        },
+        {
+            path: 'products/create',
+            name: 'admin-master.products.create',
+            component: () => import('@/pages/products/ProductFormPage.vue'),
+            meta: { breadcrumb: ['Admin Master', 'Master Barang', 'Tambah'] },
+        },
+        {
+            path: 'products/:id(\\d+)',
+            name: 'admin-master.products.show',
+            component: () => import('@/pages/products/ProductDetailPage.vue'),
+            meta: { breadcrumb: ['Admin Master', 'Master Barang', 'Detail'] },
+        },
+        {
+            path: 'products/:id(\\d+)/edit',
+            name: 'admin-master.products.edit',
+            component: () => import('@/pages/products/ProductFormPage.vue'),
+            meta: { breadcrumb: ['Admin Master', 'Master Barang', 'Edit'] },
+        },
+        {
+            path: 'stock-history',
+            name: 'admin-master.stock-history',
+            component: () => import('@/pages/inventory/StockLedgerPage.vue'),
+            meta: { breadcrumb: ['Admin Master', 'Riwayat Stok'] },
+        },
+        {
+            path: 'reports/inventory',
+            name: 'admin-master.reports.inventory',
+            component: () => import('@/pages/reports/InventoryReportPage.vue'),
+            meta: { breadcrumb: ['Admin Master', 'Laporan Barang'] },
+        },
+        {
+            path: 'master/categories',
+            name: 'admin-master.categories',
+            component: () => import('@/pages/master/MasterDataPage.vue'),
+            props: { entity: 'categories' },
+            meta: { breadcrumb: ['Admin Master', 'Master Data', 'Kategori'] },
+        },
+        {
+            path: 'master/product-types',
+            name: 'admin-master.product-types',
+            component: () => import('@/pages/master/MasterDataPage.vue'),
+            props: { entity: 'product-types' },
+            meta: { breadcrumb: ['Admin Master', 'Master Data', 'Tipe Barang'] },
+        },
+        {
+            path: 'master/brands',
+            name: 'admin-master.brands',
+            component: () => import('@/pages/master/MasterDataPage.vue'),
+            props: { entity: 'brands' },
+            meta: { breadcrumb: ['Admin Master', 'Master Data', 'Merek'] },
+        },
+        {
+            path: 'master/units',
+            name: 'admin-master.units',
+            component: () => import('@/pages/master/MasterDataPage.vue'),
+            props: { entity: 'units' },
+            meta: { breadcrumb: ['Admin Master', 'Master Data', 'Satuan'] },
+        },
+        {
+            path: 'profil',
+            name: 'admin-master.profile',
+            component: () => import('@/pages/settings/ProfilePage.vue'),
+            meta: { breadcrumb: ['Admin Master', 'Pengaturan', 'Profil'] },
+        },
+    ],
+};
