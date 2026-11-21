@@ -17,11 +17,17 @@ class CompanySetting extends Model
         'email',
         'description',
         'footer_text',
+        'draft_expiry_hours',
     ];
+
+    protected function casts(): array
+    {
+        return ['draft_expiry_hours' => 'integer'];
+    }
 
     public static function current(): self
     {
-        return static::query()->first() ?? static::create([]);
+        return static::query()->first() ?? static::create([])->fresh();
     }
 
     protected function logoUrl(): Attribute

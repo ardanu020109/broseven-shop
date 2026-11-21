@@ -36,7 +36,7 @@ class SettingsController extends Controller
     public function updateCompany(CompanySettingRequest $request): JsonResponse
     {
         $company = CompanySetting::current();
-        $data = $request->safe()->only(['store_name', 'address', 'phone', 'email', 'description', 'footer_text']);
+        $data = $request->safe()->only(['store_name', 'address', 'phone', 'email', 'description', 'footer_text', 'draft_expiry_hours']);
         $old = $company->only(array_keys($data));
         $disk = Storage::disk('public');
         $newFiles = [];
@@ -148,6 +148,7 @@ class SettingsController extends Controller
             'email' => $company->email,
             'description' => $company->description,
             'footer_text' => $company->footer_text,
+            'draft_expiry_hours' => (int) $company->draft_expiry_hours,
         ];
     }
 

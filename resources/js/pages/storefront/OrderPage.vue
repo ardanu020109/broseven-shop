@@ -38,6 +38,16 @@ const steps = [
 
 const currentStep = computed(() => ({ DRAFT: 0, MENUNGGU: 1, SELESAI: 2 })[order.value?.status] ?? -1);
 
+const expiresAt = computed(() => {
+    const hours = Number(branding.company.draft_expiry_hours ?? 0);
+
+    if (!order.value || order.value.status !== 'DRAFT' || hours <= 0) {
+        return null;
+    }
+
+    return new Date(new Date(order.value.created_at).getTime() + hours * 3600 * 1000);
+});
+
 function resolveToken() {
     const fromHash = route.hash.replace(/^#/, '');
 
@@ -94,7 +104,10 @@ async function load({ silent = false } = {}) {
             toast.success(`Status pesanan diperbarui: ${data.data.status_label}.`);
         }
     } catch (error) {
-        if (!silent) {
+        if (silent && error.response?.status === 404) {
+            notFound.value = true;
+            order.value = null;
+        } else if (!silent) {
             if (error.response?.status === 404) {
                 notFound.value = true;
             } else {
@@ -157,7 +170,7 @@ async function download() {
 
         <div v-else-if="notFound || !order" class="card empty-state">
             <h3>Pesanan tidak ditemukan</h3>
-            <p>Nomor pesanan atau token akses tidak valid.</p>
+            <p>Nomor pesanan atau token akses tidak valid, atau pesanan draft sudah kedaluwarsa dan dihapus otomatis.</p>
             <RouterLink class="btn btn-primary" :to="{ name: 'store.orders' }">Lihat Pesanan Saya</RouterLink>
         </div>
 
@@ -178,6 +191,7 @@ async function download() {
                         <p class="qr-code">{{ order.barcode_code }}</p>
                         <div class="alert alert-success" style="margin: 14px 0 0; text-align: left">
                             Tunjukkan QR Code ini kepada kasir untuk divalidasi. Pembayaran dilakukan langsung di kasir.
+                            <template v-if="expiresAt"><br />Pesanan ini dihapus otomatis bila belum divalidasi kasir sebelum {{ formatDateTime(expiresAt) }}.</template>
                         </div>
                     </template>
 
