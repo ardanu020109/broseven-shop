@@ -15,7 +15,7 @@ const toast = useToast();
 const loading = ref(true);
 const saving = ref(false);
 const errors = ref({});
-const form = reactive({ store_name: '', address: '', phone: '', email: '', description: '', footer_text: '' });
+const form = reactive({ store_name: '', address: '', phone: '', email: '', description: '', footer_text: '', draft_expiry_hours: 24 });
 const current = reactive({ logo_url: null, favicon_url: null });
 const files = reactive({ logo: null, favicon: null });
 const previews = reactive({ logo: null, favicon: null });
@@ -49,6 +49,7 @@ function fill(data) {
     form.email = data.email ?? '';
     form.description = data.description ?? '';
     form.footer_text = data.footer_text ?? '';
+    form.draft_expiry_hours = data.draft_expiry_hours ?? 24;
     current.logo_url = data.logo_url;
     current.favicon_url = data.favicon_url;
     resetFiles();
@@ -112,7 +113,7 @@ async function save() {
     const body = new FormData();
 
     for (const [key, value] of Object.entries(form)) {
-        body.append(key, value.trim());
+        body.append(key, String(value).trim());
     }
 
     for (const kind of ['logo', 'favicon']) {
@@ -188,6 +189,13 @@ async function save() {
                     <label class="form-label" for="c-footer">Informasi Footer</label>
                     <input id="c-footer" v-model="form.footer_text" class="input" :class="{ 'is-invalid': errors.footer_text }" type="text" maxlength="300" />
                     <span v-if="errors.footer_text" class="form-error">{{ errors.footer_text }}</span>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="c-expiry">Hapus otomatis pesanan draft setelah (jam)</label>
+                    <input id="c-expiry" v-model.number="form.draft_expiry_hours" class="input" :class="{ 'is-invalid': errors.draft_expiry_hours }" type="number" min="0" max="720" step="1" />
+                    <span v-if="errors.draft_expiry_hours" class="form-error">{{ errors.draft_expiry_hours }}</span>
+                    <span v-else class="hint">Pesanan DRAFT yang belum divalidasi kasir dihapus permanen setelah waktu ini. Isi 0 untuk menonaktifkan. Maksimal 720 jam (30 hari). Butuh penjadwal Laravel yang aktif (lihat README).</span>
                 </div>
             </div>
 

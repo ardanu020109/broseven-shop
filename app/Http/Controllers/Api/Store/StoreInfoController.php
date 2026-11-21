@@ -26,6 +26,7 @@ class StoreInfoController extends Controller
                 'email' => $company->email,
                 'description' => $company->description,
                 'footer_text' => $company->footer_text,
+                'draft_expiry_hours' => (int) $company->draft_expiry_hours,
             ],
             'colors' => [
                 'primary' => $site->primary_color,
